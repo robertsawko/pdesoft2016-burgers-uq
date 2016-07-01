@@ -1,0 +1,3 @@
+burgersFoam.C
+
+EXE = $(FOAM_APPBIN)/burgersFoam
