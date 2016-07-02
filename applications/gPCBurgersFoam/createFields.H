@@ -15,6 +15,21 @@
         readLabel(UQProperties.lookup("order")) //need readLabel!
     );
 
+    scalar e[3][3][3];
+    e[0][0][0] = 1.0;
+    e[1][1][0] = 1.0;
+    e[2][2][0] = 1.0;
+
+    e[0][1][1] = 1.0;
+    e[1][0][1] = 1.0;
+    e[1][2][1] = Foam::sqrt(2.0);
+    e[2][1][1] = Foam::sqrt(2.0);
+
+    e[0][2][2] = 1.0;
+    e[2][0][2] = 1.0;
+    e[1][1][2] = Foam::sqrt(2.0);
+    e[2][2][2] = 2.0 * Foam::sqrt(2.0);
+
     PtrList<volVectorField> Uhat(order + 1);
     PtrList<surfaceScalarField> phihat(order + 1);
     forAll(Uhat, i)

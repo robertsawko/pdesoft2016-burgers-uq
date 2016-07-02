@@ -28,7 +28,7 @@ gradSchemes
 divSchemes
 {
     default         none;
-    "div\(phihat.*,Uhat.*\)"      Gauss SuperBee;
+    "div\(phihat.*,Uhat.*\)"      Gauss linear;
 }
 
 laplacianSchemes

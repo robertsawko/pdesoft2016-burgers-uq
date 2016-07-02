@@ -56,16 +56,26 @@ int main(int argc, char *argv[])
 
         while (simple.correctNonOrthogonal())
         {
-            forAll(Uhat, i)
+            forAll(Uhat, k)
             {
-                solve
-                (
-                    fvm::ddt(Uhat[i])
-                  + fvm::div(phihat[i], Uhat[i])
-                  - fvm::laplacian(nu, Uhat[i])
+                fvVectorMatrix UhatEqn(
+                    fvm::ddt(Uhat[k])
+                    -
+                    fvm::laplacian(nu, Uhat[k])
                 );
-                phihat[i] = linearInterpolate(Uhat[i]) & mesh.Sf();
+
+                forAll(Uhat, i){
+                    forAll(Uhat, j){
+                        if(j == k) 
+                            UhatEqn += e[i][j][k] * fvm::div(phihat[i], Uhat[j]);
+                        else
+                            UhatEqn += e[i][j][k] * fvc::div(phihat[i], Uhat[j]);
+                    }
+                }
+                solve(UhatEqn);
+                phihat[k] = linearInterpolate(Uhat[k]) & mesh.Sf();
             }
+
         }
         runTime.write();
     }

@@ -19,9 +19,9 @@ solvers
 {
     "Uhat.*"
     {
-        solver          PBiCG;
-        preconditioner  DILU;
-        tolerance       1e-06;
+        solver          GAMG;
+        smoother        GaussSeidel;
+        tolerance       1e-08;
         relTol          0;
     }
 }
