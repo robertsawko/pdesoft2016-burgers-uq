@@ -2,3 +2,4 @@ polyMesh
 linux64Gcc*
 [0-9]*
 !0
+*.swp

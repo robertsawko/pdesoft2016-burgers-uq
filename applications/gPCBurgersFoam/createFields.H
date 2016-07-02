@@ -16,6 +16,7 @@
     );
 
     PtrList<volVectorField> Uhat(order);
+    PtrList<surfaceScalarField> phihat(order);
     forAll(Uhat, i)
     {
         Info<< "Reading field U" << i <<endl;
@@ -29,21 +30,17 @@
                 IOobject::AUTO_WRITE
             ),
             mesh));
+        phihat.set(i, new surfaceScalarField(
+            IOobject
+            (
+                "phihat" + std::to_string(i),
+                runTime.timeName(),
+                mesh,
+                IOobject::READ_IF_PRESENT,
+                IOobject::AUTO_WRITE
+            ),
+            linearInterpolate(Uhat[i]) & mesh.Sf()));
     }
-
-    volVectorField U
-    (
-        IOobject
-        (
-            "U",
-            runTime.timeName(),
-            mesh,
-            IOobject::MUST_READ,
-            IOobject::AUTO_WRITE
-        ),
-        mesh
-    );
-
 
     Info<< "Reading transportProperties\n" << endl;
 
@@ -68,4 +65,3 @@
     );
 
 
-    #include "createPhi.H"

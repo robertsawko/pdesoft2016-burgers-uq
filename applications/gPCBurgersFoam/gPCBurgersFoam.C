@@ -50,22 +50,23 @@ int main(int argc, char *argv[])
 
     Info<< "\nCalculating scalar transport\n" << endl;
 
-    #include "CourantNo.H"
-
     while (simple.loop())
     {
         Info<< "Time = " << runTime.timeName() << nl << endl;
 
         while (simple.correctNonOrthogonal())
         {
-            solve
-            (
-                fvm::ddt(U)
-              + fvm::div(phi, U)
-              - fvm::laplacian(nu, U)
-            );
+            forAll(Uhat, i)
+            {
+                solve
+                (
+                    fvm::ddt(Uhat[i])
+                  + fvm::div(phihat[i], Uhat[i])
+                  - fvm::laplacian(nu, Uhat[i])
+                );
+                phihat[i] = linearInterpolate(Uhat[i]) & mesh.Sf();
+            }
         }
-        phi = linearInterpolate(U) & mesh.Sf();
         runTime.write();
     }
 

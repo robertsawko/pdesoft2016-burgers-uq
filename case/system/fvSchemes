@@ -28,13 +28,13 @@ gradSchemes
 divSchemes
 {
     default         none;
-    div(phi,U)      Gauss SuperBee;
+    "div\(phihat.*,Uhat.*\)"      Gauss SuperBee;
 }
 
 laplacianSchemes
 {
     default         none;
-    laplacian(nu,U) Gauss linear orthogonal;
+    "laplacian\(nu,Uhat.*\)" Gauss linear orthogonal;
 }
 
 interpolationSchemes
