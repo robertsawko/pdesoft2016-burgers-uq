@@ -1,4 +1,35 @@
-    Info<< "Reading field U\n" << endl;
+    IOdictionary UQProperties
+    (
+        IOobject
+        (
+            "UQProperties",
+            runTime.constant(),
+            mesh,
+            IOobject::MUST_READ,
+            IOobject::NO_WRITE
+        )
+    );
+
+    label order
+    (
+        readLabel(UQProperties.lookup("order")) //need readLabel!
+    );
+
+    PtrList<volVectorField> Uhat(order);
+    forAll(Uhat, i)
+    {
+        Info<< "Reading field U" << i <<endl;
+        Uhat.set(i, new volVectorField(
+            IOobject
+            (
+                "Uhat" + std::to_string(i),
+                runTime.timeName(),
+                mesh,
+                IOobject::MUST_READ,
+                IOobject::AUTO_WRITE
+            ),
+            mesh));
+    }
 
     volVectorField U
     (
@@ -36,22 +67,5 @@
         transportProperties.lookup("nu")
     );
 
-
-    IOdictionary UQProperties
-    (
-        IOobject
-        (
-            "UQProperties",
-            runTime.constant(),
-            mesh,
-            IOobject::MUST_READ,
-            IOobject::NO_WRITE
-        )
-    );
-
-    label order
-    (
-        readLabel(UQProperties.lookup("order")) //need readLabel!
-    );
 
     #include "createPhi.H"

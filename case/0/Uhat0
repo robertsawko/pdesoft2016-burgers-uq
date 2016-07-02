@@ -9,18 +9,35 @@ FoamFile
 {
     version     2.0;
     format      ascii;
-    class       dictionary;
-    location    "system";
-    object      funkySetFieldsDict;
+    class       volVectorField;
+    location    "0";
+    object      Uhat0;
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-expressions
-(
-       sinusoidal
-       {
-           field Uhat0;
-           expression "vector(sin(pos().x),0,0)";
-       }
-);
+dimensions      [0 1 -1 0 0 0 0];
+
+internalField   uniform (0 0 0);
+
+boundaryField
+{
+    inlet
+    {
+        type            cyclic;
+    }
+    outlet
+    {
+        type            cyclic;
+    }
+    sides
+    {
+        type            zeroGradient;
+    }
+    defaultFaces
+    {
+        type            empty;
+    }
+}
+
+
 // ************************************************************************* //
