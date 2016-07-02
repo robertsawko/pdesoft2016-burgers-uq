@@ -15,8 +15,8 @@
         readLabel(UQProperties.lookup("order")) //need readLabel!
     );
 
-    PtrList<volVectorField> Uhat(order);
-    PtrList<surfaceScalarField> phihat(order);
+    PtrList<volVectorField> Uhat(order + 1);
+    PtrList<surfaceScalarField> phihat(order + 1);
     forAll(Uhat, i)
     {
         Info<< "Reading field U" << i <<endl;
