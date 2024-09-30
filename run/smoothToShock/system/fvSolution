@@ -10,71 +10,26 @@ FoamFile
     version     2.0;
     format      ascii;
     class       dictionary;
-    object      blockMeshDict;
+    location    "system";
+    object      fvSolution;
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-convertToMeters 1;
-
-length 6.28; //2PI
-cell_count 1000;
-
-vertices
-(
-    (0 0 0)
-    ($length 0 0)
-    ($length 1 0)
-    (0 1 0)
-    (0 0 1)
-    ($length 0 1)
-    ($length 1 1)
-    (0 1 1)
-);
-
-blocks
-(
-    hex (0 1 2 3 4 5 6 7) ($cell_count 1 1) simpleGrading (1 1 1)
-);
-
-edges
-(
-);
-
-boundary
-(
-    inlet
+solvers
+{
+    U
     {
-        type cyclic;
-        neighbourPatch outlet;
-        faces
-        (
-            (4 0 3 7)
-        );
+        solver          GAMG;
+        smoother        GaussSeidel;
+        tolerance       1e-08;
+        relTol          0;
     }
-    outlet
-    {
-        type cyclic;
-        neighbourPatch inlet;
-        faces
-        (
-            (1 5 6 2)
-        );
-    }
-    
-    sides
-    {
-        type patch;
-        faces
-        (
-            (0 1 2 3)
-            (3 2 6 7)
-            (4 5 1 0)
-        );
-    }
-);
+}
 
-mergePatchPairs
-(
-);
+SIMPLE
+{
+    nNonOrthogonalCorrectors 0;
+}
+
 
 // ************************************************************************* //
