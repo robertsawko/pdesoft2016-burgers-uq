@@ -63,7 +63,7 @@ functions
             type    uniform;   // midPoint, midPointAndFace
             axis    distance;  // x, y, z, xyz
             nPoints 100;
-            axis    y;
+            axis    x;
         }
 
 
