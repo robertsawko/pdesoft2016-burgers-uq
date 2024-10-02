@@ -63,6 +63,8 @@ int main(int argc, char *argv[])
                 fvm::ddt(U)
               + fvm::div(phi, U)
               - fvm::laplacian(nu, U)
+              ==
+              fvOptions(U)
             );
         }
         phi = linearInterpolate(U) & mesh.Sf();

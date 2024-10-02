@@ -3,3 +3,6 @@ linux64Gcc*
 [0-9]*
 !0
 *.swp
+.cache
+compile_commands.json
+lnInclude
