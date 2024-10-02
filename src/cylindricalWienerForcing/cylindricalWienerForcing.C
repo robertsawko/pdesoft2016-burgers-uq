@@ -86,17 +86,26 @@ Foam::fv::cylindricalWienerForcing::cylindricalWienerForcing
 :
     fv::cellSetOption(sourceName, modelType, dict, mesh),
     sigma_(coeffs_.getOrDefault<scalar>("sigma", 1.0)),
-    flowDir_(coeffs_.getOrDefault<vector>("flowDir", vector(1.0, 0.0, 0.0)))
+    flowDir_(coeffs_.getOrDefault<vector>("flowDir", vector(1.0, 0.0, 0.0))),
+    dW_(
+        IOobject
+        (
+         "dW",
+         mesh_.time().timeName(),
+         mesh_,
+         IOobject::NO_READ,
+         IOobject::AUTO_WRITE
+        ),
+        mesh_,
+        dimensionedScalar(dimAcceleration, Zero)
+    )
 {
-    /*coeffs_.readEntry("fields", fieldNames_);
-
+    coeffs_.readEntry("fields", fieldNames_);
     if (fieldNames_.size() != 1)
     {
         FatalErrorInFunction
             << "settings are:" << fieldNames_ << exit(FatalError);
     }
-    */
-
     fv::option::resetApplied();
 }
 
@@ -115,40 +124,13 @@ void Foam::fv::cylindricalWienerForcing::addSup
     const label fieldi
 )
 {
-    volVectorField::Internal Su
-    (
-        IOobject
-        (
-            name_ + fieldNames_[fieldi] + "Sup",
-            mesh_.time().timeName(),
-            mesh_,
-            IOobject::NO_READ,
-            IOobject::NO_WRITE
-        ),
-        mesh_,
-        dimensionedVector(eqn.dimensions()/dimVolume, Zero)
-    );
-
-    volScalarField dW (
-        IOobject
-        (
-         "dW",
-         mesh_.time().timeName(),
-         mesh_,
-         IOobject::NO_READ,
-         IOobject::NO_WRITE
-        ),
-        mesh_,
-        dimensionedScalar(dimAcceleration, Zero)
-    );
     Random::gaussianGeneratorOp<scalar> gen(mesh_.time().timeIndex());
-    FieldOps::assign(dW, dW, gen);
-    dW *= sigma_/0.01;
+    FieldOps::assign(dW_, dW_, gen);
+    dW_ *= sigma_;
 
+    Info<< "Adding a source term!\n";
 
-    UIndirectList<vector>(Su, cells_) = flowDir_*dW;
-
-    eqn += Su;
+    eqn.source() += flowDir_*dW_;
 }
 
 

@@ -123,6 +123,8 @@ protected:
         //- Flow direction
         vector flowDir_;
 
+        volScalarField dW_;
+
     // Protected Member Functions
 
         //- Write the pressure gradient to file (for restarts etc)
