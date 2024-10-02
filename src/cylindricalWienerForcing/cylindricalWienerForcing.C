@@ -86,7 +86,10 @@ Foam::fv::cylindricalWienerForcing::cylindricalWienerForcing
 :
     fv::cellSetOption(sourceName, modelType, dict, mesh),
     sigma_(coeffs_.getOrDefault<scalar>("sigma", 1.0)),
+    // Assuming uniform distribution
+    dx_((mesh.bounds().min()[1] - mesh.bounds().min()[0]) / mesh.nCells()),
     flowDir_(coeffs_.getOrDefault<vector>("flowDir", vector(1.0, 0.0, 0.0))),
+    seed_(coeffs_.getOrDefault<label>("seed", 123)),
     dW_(
         IOobject
         (
@@ -124,9 +127,9 @@ void Foam::fv::cylindricalWienerForcing::addSup
     const label fieldi
 )
 {
-    Random::gaussianGeneratorOp<scalar> gen(mesh_.time().timeIndex());
+    Random::gaussianGeneratorOp<scalar> gen(seed_ + mesh_.time().timeIndex());
     FieldOps::assign(dW_, dW_, gen);
-    dW_ *= sigma_;
+    dW_ *= sigma_/dx_;
 
     Info<< "Adding a source term!\n";
 

@@ -21,7 +21,8 @@ momentumSource
     selectionMode   all;
 
     fields          (U);
-    sigma           1.0;
+    sigma           0.0025;
+    seed            121;
 }
 
 

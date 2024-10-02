@@ -119,11 +119,15 @@ protected:
 
         //- Pressure gradient before correction
         scalar sigma_;
+        //- Will assume uniform distribution
+        scalar dx_;
 
         //- Flow direction
         vector flowDir_;
 
+        label seed_;
         volScalarField dW_;
+
 
     // Protected Member Functions
 
