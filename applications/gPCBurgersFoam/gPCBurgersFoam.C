@@ -25,7 +25,14 @@ Application
     burgersFoam
 
 Description
-    Solves a transport equation for a passive scalar
+    Solves intrusive UQ equations for viscous Burgers' equation.
+
+Reference:
+    Xiu, Dongbin. Numerical Methods for Stochastic Computations: A Spectral
+    Method Approach (Princeton University Press, 2010).
+    https://doi.org/10.1515/9781400835348.
+    Section 6.5 page 76-77.
+
 
 \*---------------------------------------------------------------------------*/
 
